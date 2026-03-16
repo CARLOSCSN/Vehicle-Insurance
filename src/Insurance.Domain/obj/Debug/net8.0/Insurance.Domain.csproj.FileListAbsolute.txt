@@ -1,0 +1,11 @@
+C:\Users\carlo\Desktop\VehicleInsurance\src\Insurance.Domain\bin\Debug\net8.0\Insurance.Domain.deps.json
+C:\Users\carlo\Desktop\VehicleInsurance\src\Insurance.Domain\bin\Debug\net8.0\Insurance.Domain.dll
+C:\Users\carlo\Desktop\VehicleInsurance\src\Insurance.Domain\bin\Debug\net8.0\Insurance.Domain.pdb
+C:\Users\carlo\Desktop\VehicleInsurance\src\Insurance.Domain\obj\Debug\net8.0\Insurance.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\carlo\Desktop\VehicleInsurance\src\Insurance.Domain\obj\Debug\net8.0\Insurance.Domain.AssemblyInfoInputs.cache
+C:\Users\carlo\Desktop\VehicleInsurance\src\Insurance.Domain\obj\Debug\net8.0\Insurance.Domain.AssemblyInfo.cs
+C:\Users\carlo\Desktop\VehicleInsurance\src\Insurance.Domain\obj\Debug\net8.0\Insurance.Domain.csproj.CoreCompileInputs.cache
+C:\Users\carlo\Desktop\VehicleInsurance\src\Insurance.Domain\obj\Debug\net8.0\Insurance.Domain.dll
+C:\Users\carlo\Desktop\VehicleInsurance\src\Insurance.Domain\obj\Debug\net8.0\refint\Insurance.Domain.dll
+C:\Users\carlo\Desktop\VehicleInsurance\src\Insurance.Domain\obj\Debug\net8.0\Insurance.Domain.pdb
+C:\Users\carlo\Desktop\VehicleInsurance\src\Insurance.Domain\obj\Debug\net8.0\ref\Insurance.Domain.dll

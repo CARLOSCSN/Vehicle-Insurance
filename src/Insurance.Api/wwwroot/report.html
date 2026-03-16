@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório de Seguros - Vehicle Insurance</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 0.9em;
+        }
+
+        .card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            color: white;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .card-title {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-bottom: 8px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .card-value {
+            font-size: 2.2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .card-subtitle {
+            font-size: 0.85em;
+            opacity: 0.8;
+        }
+
+        .loading {
+            text-align: center;
+            color: #667eea;
+            padding: 40px;
+            font-size: 1.2em;
+        }
+
+        .error {
+            background: #f44336;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .refresh-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            display: block;
+            margin: 30px auto 0;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .refresh-btn:active {
+            transform: translateY(0);
+        }
+
+        .timestamp {
+            text-align: center;
+            color: #999;
+            font-size: 0.85em;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .card-value {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Relatório de Seguros</h1>
+        <p class="subtitle">Estatísticas e médias das apólices registradas</p>
+
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>Carregando dados...</p>
+        </div>
+
+        <div id="error" style="display: none;"></div>
+
+        <div id="report" style="display: none;">
+            <div class="card">
+                <div class="card-title">💰 Valor Médio de Seguro</div>
+                <div class="card-value" id="avgInsurance">-</div>
+                <div class="card-subtitle">Média calculada sobre todas as apólices</div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">🚗 Valor Médio de Veículo</div>
+                <div class="card-value" id="avgVehicle">-</div>
+                <div class="card-subtitle">Média do valor dos veículos segurados</div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">📋 Total de Apólices</div>
+                <div class="card-value" id="totalPolicies">-</div>
+                <div class="card-subtitle">Número total de seguros registrados</div>
+            </div>
+
+            <button class="refresh-btn" onclick="loadReport()">🔄 Atualizar Dados</button>
+
+            <div class="timestamp" id="timestamp"></div>
+        </div>
+    </div>
+
+    <script>
+        // API Base URL
+        const API_BASE_URL = window.location.origin;
+
+        // Formatar valor como moeda brasileira
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            }).format(value);
+        }
+
+        // Carregar relatório da API
+        async function loadReport() {
+            const loadingEl = document.getElementById('loading');
+            const errorEl = document.getElementById('error');
+            const reportEl = document.getElementById('report');
+
+            // Mostrar loading
+            loadingEl.style.display = 'block';
+            errorEl.style.display = 'none';
+            reportEl.style.display = 'none';
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/insurance/report`);
+
+                if (!response.ok) {
+                    throw new Error(`Erro na requisição: ${response.status} ${response.statusText}`);
+                }
+
+                const data = await response.json();
+
+                // Atualizar valores na página
+                document.getElementById('avgInsurance').textContent = formatCurrency(data.averageInsuranceValue);
+                document.getElementById('avgVehicle').textContent = formatCurrency(data.averageVehicleValue);
+                document.getElementById('totalPolicies').textContent = data.totalPolicies;
+
+                // Atualizar timestamp
+                const now = new Date();
+                document.getElementById('timestamp').textContent = 
+                    `Última atualização: ${now.toLocaleString('pt-BR')}`;
+
+                // Mostrar relatório
+                loadingEl.style.display = 'none';
+                reportEl.style.display = 'block';
+
+            } catch (error) {
+                console.error('Erro ao carregar relatório:', error);
+                
+                errorEl.innerHTML = `
+                    <strong>❌ Erro ao carregar dados</strong><br>
+                    ${error.message}<br><br>
+                    <small>Verifique se a API está rodando em ${API_BASE_URL}</small>
+                `;
+                errorEl.style.display = 'block';
+                loadingEl.style.display = 'none';
+            }
+        }
+
+        // Carregar dados ao abrir a página
+        window.addEventListener('DOMContentLoaded', loadReport);
+    </script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+{
+    // Arquivos e pastas para excluir da visualização
+    "files.exclude": {
+        "**/bin": true,
+        "**/obj": true,
+        "**/.vs": true
+    },
+    
+    // Arquivos para ignorar no search
+    "search.exclude": {
+        "**/bin": true,
+        "**/obj": true,
+        "**/.vs": true,
+        "**/node_modules": true
+    },
+    
+    // Configurações do C#
+    "omnisharp.enableEditorConfigSupport": true,
+    "omnisharp.enableImportCompletion": true,
+    "omnisharp.enableRoslynAnalyzers": true,
+    "omnisharp.organizeImportsOnFormat": true,
+    
+    // Formatação automática
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    
+    // Configurações específicas para C#
+    "[csharp]": {
+        "editor.defaultFormatter": "ms-dotnettools.csharp",
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit",
+            "source.fixAll": "explicit"
+        },
+        "editor.tabSize": 4,
+        "editor.insertSpaces": true
+    },
+    
+    // Configurações para JSON
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features",
+        "editor.tabSize": 2
+    },
+    
+    // Configurações para Markdown
+    "[markdown]": {
+        "editor.wordWrap": "on"
+    },
+    
+    // Terminal integrado
+    "terminal.integrated.defaultProfile.windows": "PowerShell",
+    
+    // .NET Core Test Explorer
+    "dotnet-test-explorer.testProjectPath": "tests/**/*.csproj",
+    
+    // Git
+    "git.ignoreLimitWarning": true,
+    
+    // Sugestões de código
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    
+    // Auto save
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 1000
+}
